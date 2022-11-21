@@ -63,6 +63,6 @@ function Import-MsIdAdfsSamplePolicy {
         }
     }
     else {
-        Write-Error "The Import-MsIdAdfsSampleApps cmdlet requires the ADFS module installed to work."
+        Write-Error "The Import-MsIdAdfsSamplePolicy cmdlet requires the ADFS module installed to work."
     }
 }
