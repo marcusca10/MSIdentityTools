@@ -86,18 +86,13 @@ function Import-MsIdAdfsJsonRelyingParty {
                 }
                 $newSamlEndPoints += $newSamlEndPoint
             }
-            # Add mock redirect URI if provided
-            if ($ResponseUri -ne "") {
-                $index = 0
-                $protocol = ""
-                $newSamlEndPoint = New-ADFSSamlEndpoint -Binding $SamlEndpoint.Binding `
-                    -Protocol $protocol `
-                    -Uri $ResponseUri -Index $index
-                $newSamlEndPoints += $newSamlEndPoint
+            Set-ADFSRelyingPartyTrust -TargetName $Name -SamlEndpoint $newSamlEndPoints
+
+            # Add another SAML redirect URI if provided
+            if ($ResponseUri -ne "") { 
+                Add-MsIdAdfsRelyingPartySamlResponseUri -Name $Name -ResponseUri $ResponseUri
             }
 
-
-            Set-ADFSRelyingPartyTrust -TargetName $Name -SamlEndpoint $newSamlEndPoints
             Set-ADFSRelyingPartyTrust -TargetName $Name -SamlResponseSignature $RelyingParty.SamlResponseSignature
             Set-ADFSRelyingPartyTrust -TargetName $Name -SignatureAlgorithm $RelyingParty.SignatureAlgorithm
             Set-ADFSRelyingPartyTrust -TargetName $Name -TokenLifetime $RelyingParty.TokenLifetime
